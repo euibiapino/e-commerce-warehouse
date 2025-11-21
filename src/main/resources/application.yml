@@ -1,0 +1,37 @@
+server:
+  servlet:
+    context-path: /warehouse
+spring:
+  application:
+    name: warehouse
+
+  datasource:
+    url: jdbc:h2:mem:warehouse
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    queue:
+      product-change-availability: product.change.availability.queue
+    exchange:
+      product-change-availability: product.change.availability.exchange
+    routing-key:
+      product-change-availability: product.change.availability.routing.key
+warehouse:
+  base-path: http://storefrontapp:8081/storefront

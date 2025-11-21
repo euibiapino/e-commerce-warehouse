@@ -1,0 +1,31 @@
+services:
+  warehouseapp:
+    build:
+      context: .
+    command: bash start-dev.sh
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+      - "5006:5005"
+    volumes:
+      - .:/warehouse:z
+    networks:
+      - ecommerce-net
+    depends_on:
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:4.0.5
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    command: >
+      sh -c "rabbitmq-plugins enable rabbitmq_management &&
+             rabbitmq-server"
+networks:
+  ecommerce-net:
+    name: ecommerce-net
+    external: true
